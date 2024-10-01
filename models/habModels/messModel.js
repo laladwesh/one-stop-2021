@@ -7,15 +7,25 @@ const messSchema = new mongoose.Schema({
     required: true,
     enum: allIITGHostels,
   },
-  inComing: {
+  incoming: {
     // emails of all users who have subscribed to this mess
     type: [String],
     default: [],
   },
-  outGoing: {
+  outgoing: {
     // emails of all users who have unsubscribed to this mess
     type: [String],
     default: [],
+  },
+  messIncomingCapacity : {
+    type: Number,
+    required: true,
+    default: 150,
+  },
+  messOutgoingCapacity :{
+    type: Number,
+    required: true,
+    default: 150,
   }
 });
 

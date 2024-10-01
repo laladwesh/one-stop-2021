@@ -12,6 +12,7 @@ const { NotFoundError } = require("./errors/not.found.error");
 const { createLastUpdateDocument } = require("./controllers/lastUpdateController");
 const { UnauthorizedRequestError } = require("./errors/unauthorized.request.error");
 const { scheduleOPIEmails } = require("./helpers/cronJobs/opiEmails");
+const { scheduleMessChange } = require("./helpers/cronJobs/messChange");
 
 console.log(bcrypt.hash("123",10));
 //for serving static files
@@ -82,6 +83,7 @@ app.use(BASEURL, routers.campusTravelRouter.campusTravelRouter);
 app.use(BASEURL, routers.upspRouter);
 app.use(BASEURL, routers.gcScoreboardRouter.gcScoreboardRouter);
 app.use(BASEURL, routers.opiRouter.opiRouter);
+app.use(BASEURL, routers.messChangeRouter.messChangeRouter);
 
 app.use("*",(req,res) => {
     throw new NotFoundError("Route not found");
@@ -95,6 +97,12 @@ try {
 }
 catch (e) {
     console.log("Error in scheduling OPI emails", e);
+}
+try {
+    scheduleMessChange();
+}
+catch (e) {
+    console.log("Error in Changing Mess", e);
 }
 
 const PORT = process.env.PORT || 3000;
